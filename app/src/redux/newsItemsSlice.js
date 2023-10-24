@@ -115,8 +115,9 @@ const storySlice = createSlice({
           } else {
             state.subcomments[subcomment.parent] = [subcomment,]
           }
-          state.subcommentsLoading = false;
-        })
+        }
+        )
+        state.subcommentsLoading = false;
       }).addCase(fetchSubcommentsByCommentId.pending, (state, action) => {
         state.subcommentsLoading = true;
       }).addCase(fetchSubcommentsByCommentId.rejected, (state, action) => {

@@ -8,8 +8,8 @@ const NewsItem = ({ story }) => {
 	return (
 		<div className='news-item'>
 			<img src={backgroundItem} alt='bg' className='news-item__background' />
+			<h3 className='news-item__title'>{story.title}</h3>
 			<div className='news-item__content'>
-				<h3 className='news-item__title'>{story.title}</h3>
 				<div className='news-item__info'>
 					<p className='news-item__info-author'>Author: {story.by}</p>
 					<p className='news-item__info-rate'>

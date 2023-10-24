@@ -14,6 +14,10 @@
 
     ```yarn```
 
-3. Run project: 
+3. Go to proj directory with command:
+
+    ```cd app```
+
+4. Run project: 
 
     ```yarn start```
