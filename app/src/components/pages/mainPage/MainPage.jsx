@@ -52,20 +52,25 @@ function MainPage() {
 	return (
 		<div className='main-page'>
 			<img src={storyBack} alt='background' className='main-page__background' />
-			<h2 className='main-page__title'>
-				Check fresh news and stories from Hacker News!
-			</h2>
-			<button onClick={updateNews} className='main-page__reload'>
-				<AiOutlineReload className='header-button__svg' /> Update news
-			</button>
+
 			{console.log(sortedStories)}
 			{isLoading ? (
-				<Loader />
+				<Loader className='loader' />
 			) : (
 				<div className='main-page__news-list'>
-					{sortedStories.map((story) => (
-						<NewsItem story={story} key={story.id} />
-					))}
+					<div className='main-page__news-list-header'>
+						<h2 className='main-page__title'>
+							Check fresh news and stories from Hacker News!
+						</h2>
+						<button onClick={updateNews} className='main-page__reload'>
+							<AiOutlineReload className='header-button__svg' /> Update news
+						</button>
+					</div>
+					<div className='main-page__stories'>
+						{sortedStories.map((story) => (
+							<NewsItem story={story} key={story.id} />
+						))}
+					</div>
 				</div>
 			)}
 		</div>

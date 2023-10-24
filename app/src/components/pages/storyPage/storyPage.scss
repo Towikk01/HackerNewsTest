@@ -70,12 +70,11 @@
 	&__comments {
 		margin-top: 2rem;
 		background-color: rgba(0, 0, 0, 0.9);
-		position: relative;
+
 		width: 90%;
 		border-radius: 20px;
 		border: 1px solid #fff;
 		&-button {
-			position: absolute;
 			top: 2rem;
 			right: 1rem;
 			display: flex;
@@ -95,6 +94,10 @@
 			border: 1px solid #fff;
 			transition: 0.5s;
 
+			@media (min-width: 320px) and (max-width: 425px) {
+				margin-right: 0;
+			}
+
 			&:hover {
 				background-color: #fff;
 				color: #333;
@@ -109,6 +112,21 @@
 				gap: 2rem;
 				padding-top: 1rem;
 				align-items: center;
+				justify-content: space-between;
+
+				@media (min-width: 320px) and (max-width: 425px) {
+					flex-direction: column;
+				}
+
+				&-left {
+					display: flex;
+					gap: 1rem;
+					align-items: center;
+
+					@media (min-width: 320px) and (max-width: 425px) {
+						flex-direction: column;
+					}
+				}
 				&-title {
 					font-size: 1.5rem;
 					margin: 0;
@@ -154,6 +172,10 @@
 					gap: 0.5rem;
 					opacity: 1;
 					max-height: 100%;
+
+					@media (min-width: 320px) and (max-width: 425px) {
+						padding: 0.5rem;
+					}
 				}
 				&-item {
 					padding: 0.5rem;
@@ -174,28 +196,6 @@
 					}
 				}
 			}
-		}
-	}
-}
-
-.subcomments-list {
-	opacity: 0;
-	max-height: 0;
-	overflow: hidden;
-	transition: opacity 0.3s, max-height 0.3s;
-
-	&_visible {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		opacity: 1;
-		max-height: 100%;
-	}
-
-	&-item {
-		padding-top: 0.5rem;
-		&-text {
-			background-color: #333;
 		}
 	}
 }

@@ -7,6 +7,8 @@ import {
 	selectSubcommentsLoading,
 } from '../../../redux/newsItemsSlice'
 
+import './subcomment.scss'
+
 import { AiOutlineArrowDown } from 'react-icons/ai'
 const Subcomment = ({ comment }) => {
 	const [isVisible, setIsVisible] = useState(false)

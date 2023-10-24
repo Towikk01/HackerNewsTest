@@ -24,7 +24,6 @@ const StoryPage = ({ story }) => {
 	const [currStory, setCurrStory] = useState({})
 	const [isLoading, setIsLoading] = useState(true)
 	const [isCommentsVisible, setIsCommentVisible] = useState(false)
-	const [isSubсommentsVisible, setIsSubcommentVisible] = useState(false)
 	const { storyId } = useParams()
 	const storyIdNumber = parseInt(storyId, 10)
 	const stories = useSelector((state) => state.stories)
@@ -65,7 +64,7 @@ const StoryPage = ({ story }) => {
 
 	useEffect(() => {
 		updateComments()
-		const intervalId = setInterval(updateComments, 10000)
+		const intervalId = setInterval(updateComments, 60000)
 
 		return () => {
 			clearInterval(intervalId)
@@ -99,20 +98,22 @@ const StoryPage = ({ story }) => {
 				<p className='story-page__loading'>Loading...</p>
 			)}
 			<div className='story-page__comments'>
-				<button
-					className='story-page__comments-button'
-					onClick={updateComments}>
-					<AiOutlineReload className='header-button__svg' /> Update comments
-				</button>
 				<div className='story-page__comments-container'>
 					<div className='story-page__comments-container-header'>
-						<h3 className='story-page__comments-container-header-title'>
-							Comments [{comments.length}]
-						</h3>
+						<div className='story-page__comments-container-header-left'>
+							<h3 className='story-page__comments-container-header-title'>
+								Comments [{comments.length}]
+							</h3>
+							<button
+								className='story-page__comments-container-header-show'
+								onClick={showComments}>
+								{isCommentsVisible ? 'Hide' : 'Show'} comments
+							</button>
+						</div>
 						<button
-							className='story-page__comments-container-header-show'
-							onClick={showComments}>
-							{isCommentsVisible ? 'Hide' : 'Show'} comments
+							className='story-page__comments-button'
+							onClick={updateComments}>
+							<AiOutlineReload className='header-button__svg' /> Update comments
 						</button>
 					</div>
 					{comments.length > 0 && (
