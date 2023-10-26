@@ -18,7 +18,6 @@ import './mainPage.scss'
 function MainPage() {
 	const [isLoading, setIsLoading] = useState(true)
 	const dispatch = useDispatch()
-	const topStorysIds = useSelector((state) => state.topStoryIds)
 	const stories = useSelector((state) => state.stories)
 
 	const updateNews = () => {
