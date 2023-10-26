@@ -67,13 +67,13 @@ const fetchSubcommentsByCommentId = createAsyncThunk('stories/fetchSubcommentsBy
       const subcomments = await Promise.all(commentPromises);
       return subcomments;
     }
-
     return [];
   } catch (error) {
     console.error(`Error fetching subcomments for comment ID ${commentId}:`, error);
     throw error;
   }
 });
+
 
 
 const storySlice = createSlice({
