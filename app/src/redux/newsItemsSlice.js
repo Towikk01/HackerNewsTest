@@ -76,7 +76,39 @@ const fetchSubcommentsByCommentId = createAsyncThunk('stories/fetchSubcommentsBy
 });
 
 
+const fetchSubcommentsBySubcommentId = createAsyncThunk(
+  'stories/fetchSubcommentsBySubcommentId',
+  async (subcommentId, { rejectWithValue }) => {
+    try {
+      const subcomments = [];
 
+      const fetchSubcommentsRecursively = async (subcommentId) => {
+        const response = await fetch(`https://hacker-news.firebaseio.com/v0/item/${subcommentId}.json`);
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+        const subcomment = await response.json();
+
+        if (subcomment.kids) {
+          const commentPromises = subcomment.kids.map((kidId) => {
+            return fetchSubcommentsRecursively(kidId);
+          });
+          const subcommentReplies = await Promise.all(commentPromises);
+          subcomment.subcomments = subcommentReplies;
+        }
+
+        subcomments.push(subcomment);
+      };
+
+      await fetchSubcommentsRecursively(subcommentId);
+
+      return subcomments;
+    } catch (error) {
+      console.error(`Error fetching subcomments for comment ID ${subcommentId}:`, error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 
 
@@ -88,6 +120,7 @@ const storySlice = createSlice({
     comments: [],
     subcomments: {},
     subcommentsLoading: false,
+    isStoriesLoading: false
   },
   reducers: {
     clearStories: (state, action) => {
@@ -102,6 +135,9 @@ const storySlice = createSlice({
     clearSubcomments: (state, action) => {
       state.subcomments = {}
     },
+    isStoriesLoading: (state, action) => {
+      state.isStoriesLoading = action.payload
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -132,13 +168,14 @@ const storySlice = createSlice({
 
 export { fetchTopStoryIds, fetchStoryDetails, fetchCommentsByStoryId, fetchSubcommentsByCommentId };
 
-export const { clearStories, clearComments, clearSubcommentsByCommentId, clearSubcomments } = storySlice.actions
+export const { clearStories, clearComments, clearSubcommentsByCommentId, clearSubcomments, isStoriesLoading } = storySlice.actions
 
 export const selectTopStoriesIds = state => state.topStoryIds;
 export const selectStories = state => state.stories;
 export const selectComments = state => state.comments;
 export const selectSubcomments = state => state.subcomments;
 export const selectSubcommentsLoading = state => state.subcommentsLoading;
+export const selectIsStoriesLoading = state => state.isStoriesLoading;
 
 
 export default storySlice.reducer;

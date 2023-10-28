@@ -8,33 +8,28 @@ import {
 	fetchStoryDetails,
 	selectComments,
 	clearComments,
-	fetchSubcommentsByCommentId,
 	selectSubcomments,
-	clearSubcommentsByCommentId,
 	clearSubcomments,
 } from '../../../redux/newsItemsSlice'
 
 import { AiOutlineReload } from 'react-icons/ai'
 import Loader from '../../common/loader/Loader'
 import { AiFillStar } from 'react-icons/ai'
-import { AiOutlineArrowDown } from 'react-icons/ai'
-import Subcomment from '../../common/subcomment/Subcomment'
+import Comment from '../../common/comment/Comment'
 
 const StoryPage = ({ story }) => {
 	const [currStory, setCurrStory] = useState({})
 	const [isLoading, setIsLoading] = useState(true)
-	const [isCommentsVisible, setIsCommentVisible] = useState(false)
+	const [isCommentsVisible, setIsCommentVisible] = useState(true)
 	const { storyId } = useParams()
 	const storyIdNumber = parseInt(storyId, 10)
 	const stories = useSelector((state) => state.stories)
 	const comments = useSelector(selectComments)
-	const subcomments = useSelector(selectSubcomments)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
 		if (storyIdNumber) {
 			dispatch(fetchCommentsByStoryId(storyIdNumber))
-			console.log(stories)
 			setCurrStory(stories.find((s) => s.id === storyIdNumber))
 		}
 	}, [dispatch, stories, storyIdNumber])
@@ -119,7 +114,7 @@ const StoryPage = ({ story }) => {
 					{comments.length > 0 && (
 						<>
 							<ol
-								className={`	story-page__comments-container-list${
+								className={`story-page__comments-container-list${
 									isCommentsVisible ? '-visible' : ''
 								}`}>
 								{isLoading ? (
@@ -127,16 +122,7 @@ const StoryPage = ({ story }) => {
 								) : (
 									<>
 										{comments.map((comment) => (
-											<li
-												className='story-page__comments-container-list-item'
-												key={comment.id}>
-												<span className='story-page__comments-container-list-item-text'>
-													{comment.text
-														? comment.text
-														: '###Cannot display the comment###'}
-												</span>
-												<Subcomment comment={comment} />
-											</li>
+											<Comment comment={comment} />
 										))}
 									</>
 								)}

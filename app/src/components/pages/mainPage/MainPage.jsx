@@ -6,6 +6,8 @@ import {
 	selectStories,
 	selectTopStoriesIds,
 	clearStories,
+	selectIsStoriesLoading,
+	isStoriesLoading,
 } from '../../../redux/newsItemsSlice'
 import { AiOutlineReload } from 'react-icons/ai'
 
@@ -16,13 +18,13 @@ import Loader from '../../common/loader/Loader'
 import './mainPage.scss'
 
 function MainPage() {
-	const [isLoading, setIsLoading] = useState(true)
+	const isLoading = useSelector(selectIsStoriesLoading)
 	const dispatch = useDispatch()
 	const stories = useSelector((state) => state.stories)
 
 	const updateNews = () => {
 		dispatch(clearStories())
-		setIsLoading(true)
+		dispatch(isStoriesLoading(true))
 		dispatch(fetchTopStoryIds())
 			.then((action) => {
 				const top100StoryIds = action.payload.slice(0, 100)
@@ -30,10 +32,10 @@ function MainPage() {
 					top100StoryIds.map((storyId) => dispatch(fetchStoryDetails(storyId)))
 				)
 			})
-			.then(() => setIsLoading(false))
+			.then(() => dispatch(isStoriesLoading(false)))
 			.catch((error) => {
 				console.error('Error fetching data:', error)
-				setIsLoading(false)
+				dispatch(isStoriesLoading(false))
 			})
 	}
 
@@ -51,8 +53,6 @@ function MainPage() {
 	return (
 		<div className='main-page'>
 			<img src={storyBack} alt='background' className='main-page__background' />
-
-			{console.log(sortedStories)}
 			{isLoading ? (
 				<Loader className='loader' />
 			) : (
